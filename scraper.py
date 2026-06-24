@@ -42,6 +42,12 @@ PORTFOLIO_TAGLINE = "Crafting Premium Mobile Experiences"
 # ──────────────────────────────────────────────────────────────────────────────
 FALLBACK_APPS: List[dict] = [
     {
+        "title":  "Forecast Daily Weather Update",
+        "url":    "https://play.google.com/store/apps/details?id=com.weatherplay.forecast.appweatherupdate",
+        "icon":   "https://play-lh.googleusercontent.com/2rD3ZysmfM1sHQQ053CfN33zXfz7xWn3f1cPsAhDIrB3e2a4AgseCpnH4vFVRLornd8jvlzxOF-O7xTxHAZoxQ=w240-h240-rw",
+        "rating": "4.3",
+    },
+    {
         "title":  "Master Block Craft Galaxy",
         "url":    "https://play.google.com/store/apps/details?id=com.crafton2026mine.newai",
         "icon":   "https://placehold.co/240x240/18181b/4ade80?text=MB",
@@ -110,8 +116,11 @@ def clean_icon_url(raw: str) -> str:
     """Strip any existing Google size suffix and append the HQ one."""
     if not raw:
         return ""
-    # Remove trailing =wXXX-hXXX-... parameters (including the leading '=')
-    cleaned = re.sub(r"=w\d+.*$", "", raw.strip())
+    # Google Play icon URLs end with various size tokens:
+    # =w48-h48-rw  /  =s256-rw  /  =s256  /  =w240-h240
+    # Strip everything from the first '=' that precedes a size token
+    cleaned = re.sub(r"=[a-zA-Z]?\d+[-=].*$", "", raw.strip())
+    cleaned = re.sub(r"=[a-zA-Z]\d+$", "", cleaned)  # e.g. =s256
     return cleaned + ICON_HQ_SUFFIX
 
 
@@ -194,6 +203,21 @@ def extract_title_from_tag(link_tag) -> str:
 #  ④  MAIN SCRAPE FUNCTION
 # ══════════════════════════════════════════════════════════════════════════════
 
+def fetch_missing_icon(app_url: str) -> str:
+    """Fetch icon directly from the individual app's Play Store page."""
+    try:
+        r = requests.get(app_url, headers=REQUEST_HEADERS,
+                         params={"hl": "en", "gl": "US"}, timeout=12)
+        soup = BeautifulSoup(r.text, "html.parser")
+        for img in soup.find_all("img"):
+            src = img.get("src", "")
+            if "play-lh.googleusercontent" in src:
+                return clean_icon_url(src)
+    except Exception:
+        pass
+    return ""
+
+
 def scrape_apps() -> Optional[List[dict]]:
     """
     Attempt to scrape the developer's Google Play page.
@@ -275,6 +299,11 @@ def scrape_apps() -> Optional[List[dict]]:
 
     if apps:
         print(f"[scraper] ✓  Strategy A: extracted {len(apps)} app(s) via DOM traversal.")
+        # Fix any apps that are missing icons
+        for app in apps:
+            if not app["icon"] and app["url"]:
+                print(f"[scraper]    Fetching missing icon for: {app['title']}")
+                app["icon"] = fetch_missing_icon(app["url"])
         return apps
 
     # ── Strategy B: raw HTML regex ─────────────────────────────────────────
