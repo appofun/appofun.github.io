@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── SEO ──────────────────────────────────────────────────────────── -->
+  <title>{{PORTFOLIO_TITLE}} — Premium Android Apps</title>
+  <meta name="description"  content="Premium Android apps by {{PORTFOLIO_TITLE}}. Thoughtfully crafted mobile experiences available on Google Play." />
+  <meta name="author"       content="{{PORTFOLIO_TITLE}}" />
+  <meta name="keywords"     content="android apps, google play, mobile developer, {{PORTFOLIO_TITLE}}" />
+  <link rel="canonical"     href="https://microkode.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://microkode.com/" />
+  <meta property="og:title"       content="{{PORTFOLIO_TITLE}} — Premium Android Apps" />
+  <meta property="og:description" content="{{PORTFOLIO_TAGLINE}}" />
+  <meta property="og:image"       content="https://placehold.co/1200x630/09090b/4ade80?text=MICROKODE" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="{{PORTFOLIO_TITLE}} — Premium Android Apps" />
+  <meta name="twitter:description" content="{{PORTFOLIO_TAGLINE}}" />
+
+  <!-- ── FONTS ─────────────────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ── TAILWIND CSS CDN ──────────────────────────────────────────────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+
+  <!-- ── CUSTOM STYLES ─────────────────────────────────────────────────── -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { color-scheme: dark; }
+    body { background-color: #09090b; min-height: 100vh; }
+
+    /* Ambient blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(130px);
+    }
+
+    /* Glassmorphism nav */
+    .glass-nav {
+      background: rgba(9, 9, 11, 0.78);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,0.055);
+    }
+
+    /* Gradient headline */
+    .text-gradient {
+      background: linear-gradient(140deg, #ffffff 0%, #a1a1aa 42%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Badge pulse ring */
+    .badge-pulse {
+      animation: badge-ring 2.4s ease-out infinite;
+    }
+    @keyframes badge-ring {
+      0%   { box-shadow: 0 0 0 0   rgba(16,185,129,.65); }
+      70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0);   }
+      100% { box-shadow: 0 0 0 0   rgba(16,185,129,0);   }
+    }
+
+    /* Card entrance */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    .card-wrapper { animation: fadeInUp 0.5s ease-out both; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar            { width: 5px; }
+    ::-webkit-scrollbar-track      { background: #09090b; }
+    ::-webkit-scrollbar-thumb      { background: #3f3f46; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover{ background: #52525b; }
+
+    .gradient-hr {
+      border: none; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,.09), transparent);
+    }
+    .section-label {
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: .7rem;
+    }
+
+    /* Logo wordmark style */
+    .logo-mk {
+      font-weight: 900;
+      letter-spacing: -.03em;
+    }
+  </style>
+</head>
+
+<body class="font-sans text-zinc-100 antialiased overflow-x-hidden">
+
+  <!-- ░░  AMBIENT BACKGROUND  ░░ -->
+  <div aria-hidden="true" class="fixed inset-0 z-0 overflow-hidden">
+    <div class="blob w-[700px] h-[700px] bg-emerald-500/18 -top-48 -left-48"></div>
+    <div class="blob w-[520px] h-[520px] bg-violet-600/14 top-[35%] -right-40"></div>
+    <div class="blob w-[620px] h-[620px] bg-teal-500/11  -bottom-60 left-[28%]"></div>
+    <!-- Subtle dot grid -->
+    <div class="absolute inset-0 opacity-[0.022]"
+      style="background-image:radial-gradient(rgba(255,255,255,.8) 1px, transparent 1px);background-size:40px 40px;"></div>
+  </div>
+
+  <!-- ░░  STICKY NAV  ░░ -->
+  <header class="glass-nav fixed top-0 left-0 right-0 z-50">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+
+      <!-- Wordmark -->
+      <a href="#" class="flex items-center gap-2.5 group flex-shrink-0">
+        <div class="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/35 transition-shadow group-hover:shadow-emerald-500/60">
+          <!-- MK monogram -->
+          <span class="text-zinc-900 text-[11px] font-black leading-none select-none">MK</span>
+        </div>
+        <span class="logo-mk text-white text-sm tracking-tighter">MICROKODE</span>
+      </a>
+
+      <!-- Nav links -->
+      <div class="hidden sm:flex items-center gap-6 text-xs font-medium text-zinc-400">
+        <a href="#apps"    class="hover:text-white transition-colors">Apps</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        <a
+          href="https://play.google.com/store/apps/dev?id={{DEVELOPER_PLAY_ID}}"
+          target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          Google Play
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-3 h-3">
+            <path fill-rule="evenodd" d="M4.22 11.78a.75.75 0 010-1.06L9.44 5.5H5.75a.75.75 0 010-1.5h5.5a.75.75 0 01.75.75v5.5a.75.75 0 01-1.5 0V6.56l-5.22 5.22a.75.75 0 01-1.06 0z" clip-rule="evenodd"/>
+          </svg>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ░░  MAIN  ░░ -->
+  <main class="relative z-10">
+
+    <!-- ══  HERO  ══ -->
+    <section class="pt-44 pb-28 px-6 text-center">
+      <div class="max-w-3xl mx-auto">
+
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-5 py-2 text-emerald-400 text-xs font-semibold mb-9">
+          <span class="badge-pulse w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+          Live on Google Play Store
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-5xl sm:text-6xl md:text-[4.5rem] font-black tracking-tight text-gradient leading-[1.05] mb-6">
+          Premium Mobile<br>Experiences
+        </h1>
+
+        <!-- Sub-headline -->
+        <p class="mx-auto max-w-xl text-zinc-400 text-lg sm:text-xl leading-relaxed mb-3">
+          {{PORTFOLIO_TAGLINE}}.
+        </p>
+        <p class="mx-auto max-w-lg text-zinc-600 text-sm leading-relaxed mb-12">
+          Every pixel, every interaction, every release — built to delight real users.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="https://play.google.com/store/apps/dev?id={{DEVELOPER_PLAY_ID}}"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2.5 rounded-2xl bg-emerald-500 px-7 py-3.5 text-sm font-bold text-zinc-900 shadow-xl shadow-emerald-500/30 transition-all duration-200 hover:bg-emerald-400 hover:shadow-emerald-400/45 active:scale-95"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M3 22V2l19 10L3 22z"/></svg>
+            View All on Google Play
+          </a>
+          <a
+            href="#apps"
+            class="inline-flex items-center gap-2 rounded-2xl border border-zinc-700 bg-zinc-800/60 px-7 py-3.5 text-sm font-semibold text-zinc-300 transition-all duration-200 hover:border-zinc-600 hover:text-white active:scale-95"
+          >
+            Browse Apps
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+              <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats strip -->
+    <div class="max-w-3xl mx-auto px-6 mb-20">
+      <div class="grid grid-cols-3 divide-x divide-zinc-800/60 rounded-2xl border border-zinc-800/60 bg-zinc-900/50 backdrop-blur-sm overflow-hidden">
+        <div class="flex flex-col items-center py-5 px-4">
+          <span class="text-2xl font-black text-white" id="app-count">—</span>
+          <span class="text-xs text-zinc-500 font-medium mt-1">Published Apps</span>
+        </div>
+        <div class="flex flex-col items-center py-5 px-4">
+          <span class="text-2xl font-black text-emerald-400">4.5<span class="text-base text-zinc-400">★</span></span>
+          <span class="text-xs text-zinc-500 font-medium mt-1">Avg. Rating</span>
+        </div>
+        <div class="flex flex-col items-center py-5 px-4">
+          <span class="text-2xl font-black text-white">100<span class="text-base text-zinc-400">%</span></span>
+          <span class="text-xs text-zinc-500 font-medium mt-1">Free to Download</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="gradient-hr max-w-6xl mx-auto" />
+
+    <!-- ══  APP CARDS  ══ -->
+    <section id="apps" class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+
+        <div class="mb-14 text-center">
+          <p class="section-label font-semibold text-emerald-500 mb-3">The Collection</p>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Our Applications</h2>
+          <p class="mt-3 text-zinc-500 text-sm">Refreshed automatically from Google Play every 24 hours.</p>
+        </div>
+
+        <div id="app-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- {{APPS_PLACEHOLDER}} -->
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="gradient-hr max-w-6xl mx-auto" />
+
+    <!-- ══  CONTACT  ══ -->
+    <section id="contact" class="py-24 px-6 text-center">
+      <div class="max-w-xl mx-auto">
+        <p class="section-label font-semibold text-emerald-500 mb-4">Get In Touch</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">Like What You See?</h2>
+        <p class="text-zinc-400 mb-10 leading-relaxed">
+          Download any of the apps above, leave a review, or contact us directly
+          for business inquiries, support, or partnerships.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="https://play.google.com/store/apps/dev?id={{DEVELOPER_PLAY_ID}}"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 px-7 py-3.5 text-sm font-bold text-emerald-400 transition-all duration-200 hover:bg-emerald-500 hover:border-emerald-500 hover:text-zinc-900 active:scale-95"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M3 22V2l19 10L3 22z"/></svg>
+            Open Play Store Page
+          </a>
+          <a
+            href="mailto:contact@microkode.com"
+            class="inline-flex items-center gap-2.5 rounded-2xl border border-zinc-700 bg-zinc-800/60 px-7 py-3.5 text-sm font-semibold text-zinc-300 transition-all duration-200 hover:border-zinc-600 hover:text-white active:scale-95"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+              <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/>
+              <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/>
+            </svg>
+            contact@microkode.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ░░  FOOTER  ░░ -->
+  <footer class="relative z-10 border-t border-zinc-800/50 py-10 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+      <p>© <span id="footer-year"></span> <strong class="text-zinc-400 logo-mk">MICROKODE</strong>. All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <a href="mailto:contact@microkode.com" class="hover:text-zinc-300 transition-colors">contact@microkode.com</a>
+        <span>·</span>
+        <p class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          Auto-updated nightly via GitHub Actions
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ░░  SCRIPTS  ░░ -->
+  <script>
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // Staggered card entrance
+    const cards = document.querySelectorAll('.card-wrapper');
+    cards.forEach((card, i) => { card.style.animationDelay = `${i * 0.07}s`; });
+
+    // Live app count
+    const countEl = document.getElementById('app-count');
+    if (countEl && cards.length > 0) countEl.textContent = cards.length;
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+
+</body>
+</html>

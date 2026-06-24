@@ -1,0 +1,96 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# .github/workflows/update_apps.yml
+#
+# Auto-Update Portfolio Apps
+# ──────────────────────────
+# Runs every night at 00:00 UTC (or manually via workflow_dispatch).
+# Scrapes the Google Play developer page, regenerates index.html, and
+# commits + pushes the result back to the repo — no PAT required.
+# ══════════════════════════════════════════════════════════════════════════════
+
+name: 🔄 Auto-Update Portfolio Apps
+
+on:
+  # ── Nightly at midnight UTC ──────────────────────────────────────────────
+  schedule:
+    - cron: "0 0 * * *"
+
+  # ── Manual trigger from the GitHub Actions UI ────────────────────────────
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Optional reason for manual run"
+        required: false
+        default: "Manual trigger"
+
+# ── Give the built-in GITHUB_TOKEN write access so the bot can push ─────────
+permissions:
+  contents: write
+
+jobs:
+  update-portfolio:
+    name: Scrape & Rebuild Portfolio
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 1. Check out the full repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so the git push has proper ancestry
+          fetch-depth: 0
+
+      # 2. Set up Python (latest stable 3.x)
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # 3. Install scraper dependencies (cached by setup-python automatically)
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip --quiet
+          pip install requests beautifulsoup4 --quiet
+
+      # 4. Run the scraper — writes index.html
+      - name: Run portfolio scraper
+        run: python scraper.py
+
+      # 5. Commit and push index.html only if it changed
+      #    - Uses the built-in github-actions[bot] identity (no PAT needed)
+      #    - Skips the commit gracefully when nothing changed
+      #    - [skip ci] prevents the push from triggering another workflow run
+      - name: Commit & push updated index.html
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add index.html
+
+          if git diff --staged --quiet; then
+            echo "✅ index.html is already up to date — no commit needed."
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "chore(portfolio): auto-update app listings — ${TIMESTAMP} [skip ci]"
+            git push
+            echo "✅ index.html committed and pushed successfully."
+          fi
+
+      # 6. Print a summary so it's visible in the Actions run log
+      - name: Print run summary
+        if: always()
+        run: |
+          echo "## Portfolio Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field         | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Run time      | $(date -u '+%Y-%m-%d %H:%M UTC') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger       | \`${{ github.event_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Python        | $(python --version) |" >> $GITHUB_STEP_SUMMARY
+          if [ -f index.html ]; then
+            LINES=$(wc -l < index.html)
+            echo "| index.html    | Generated (${LINES} lines) |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| index.html    | ⚠️ Not generated |" >> $GITHUB_STEP_SUMMARY
+          fi
